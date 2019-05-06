@@ -8,9 +8,13 @@ namespace ProgrammingChallenge1 {
 
             var sides = RetrievePositiveInteger();
 
+            Console.WriteLine("How many dice do you want to roll each time?");
+
+            var dieCount = RetrievePositiveInteger();
+
             var rolls = new List<int>();
             
-            var firstRoll = MakeDiceRoll(sides);
+            var firstRoll = MakeDiceRoll(sides, dieCount);
 
             rolls.Add(firstRoll);
 
@@ -20,7 +24,7 @@ namespace ProgrammingChallenge1 {
                 var rolling = RetrieveYesOrNo();
 
                 if(rolling) {
-                    var roll = MakeDiceRoll(sides);
+                    var roll = MakeDiceRoll(sides, dieCount);
 
                     rolls.Add(roll);
                 } else {
@@ -58,16 +62,12 @@ namespace ProgrammingChallenge1 {
             Console.WriteLine($"The total of your rolls was {rollTotal} and your average roll was {averageRoll}");
         }
 
-        static int MakeDiceRoll(int sides) {
-            Console.WriteLine("Do you want to roll two dice? (y/n)");
-
-            var rollingTwice = RetrieveYesOrNo();
-
+        static int MakeDiceRoll(int sides, int dieCount) {
             var random = new Random();
 
-            var roll = random.Next(sides) + 1;
+            int roll = 0;
 
-            if(rollingTwice) {
+            for(var i = 0; i < dieCount; i += 1) {
                 roll += random.Next(sides) + 1;
             }
 
