@@ -4,32 +4,23 @@ using System.Collections.Generic;
 namespace ProgrammingChallenge1 {
     class Program {
         static void Main(string[] args) {
+            Console.WriteLine("How many sides do you want your dice to have?");
+
+            var sides = RetrievePositiveInteger();
+
             var rolls = new List<int>();
             
-            var firstRoll = MakeDiceRoll();
+            var firstRoll = MakeDiceRoll(sides);
 
             rolls.Add(firstRoll);
 
             while(true) {
-                Console.WriteLine("Do you want to roll another die? (y/n)");
+                Console.WriteLine("Do you want to make another roll? (y/n)");
 
-                bool rolling;
-                while(true) {
-                    var inputText = Console.ReadLine().Trim().ToLower();
-
-                    if(inputText == "y") {
-                        rolling = true;
-                        break;
-                    } else if(inputText == "n") {
-                        rolling = false;
-                        break;
-                    } else {
-                        Console.WriteLine("Invalid input. Please input 'y' or 'n'.");
-                    }
-                }
+                var rolling = RetrieveYesOrNo();
 
                 if(rolling) {
-                    var roll = MakeDiceRoll();
+                    var roll = MakeDiceRoll(sides);
 
                     rolls.Add(roll);
                 } else {
@@ -41,20 +32,12 @@ namespace ProgrammingChallenge1 {
 
             int rollCount;
             while(true) {
-                var rollCountText = Console.ReadLine();
+                rollCount = RetrievePositiveInteger();
 
-                if(int.TryParse(rollCountText, out rollCount)) {
-                    if(rollCount > rolls.Count) {
-                        Console.WriteLine("Invalid Input. Please input a number of rolls less than or equal to the total number of rolls.");
-                    } else if(rollCount == 0) {
-                        Console.WriteLine("Invalid input. Please input a non-zero number of rolls.");
-                    } else if(rollCount < 0) {
-                        Console.WriteLine("Invalid Input. Please input a positive number of rolls.");
-                    } else {
-                        break;
-                    }
+                if(rollCount > rolls.Count) {
+                    Console.WriteLine($"Invalid input. Please input a number less than or equal to the total number of rolls ({rolls.Count})");
                 } else {
-                    Console.WriteLine("Invalid input. Please input a whole number of rolls.");
+                    break;
                 }
             }
 
@@ -75,14 +58,54 @@ namespace ProgrammingChallenge1 {
             Console.WriteLine($"The total of your rolls was {rollTotal} and your average roll was {averageRoll}");
         }
 
-        static int MakeDiceRoll() {
+        static int MakeDiceRoll(int sides) {
+            Console.WriteLine("Do you want to roll two dice? (y/n)");
+
+            var rollingTwice = RetrieveYesOrNo();
+
             var random = new Random();
 
-            var roll = random.Next(6) + 1;
+            var roll = random.Next(sides) + 1;
+
+            if(rollingTwice) {
+                roll += random.Next(sides) + 1;
+            }
 
             Console.WriteLine($"You rolled a {roll}!");
 
             return roll;
+        }
+
+        static int RetrievePositiveInteger() {
+            while(true) {                
+                var text = Console.ReadLine();
+
+                if(int.TryParse(text, out var number)) {
+                    if(number == 0) {
+                        Console.WriteLine("Invalid input. Please input a non-zero number.");
+                    } else if(number < 0) {
+                        Console.WriteLine("Invalid input. Please input a positive number.");
+                    } else {
+                        return number;
+                    }
+                } else {
+                    Console.WriteLine("Invalid input. Please input a whole number.");
+                }
+            }
+        }
+
+        static bool RetrieveYesOrNo() {
+            while(true) {
+                var text = Console.ReadLine().Trim().ToLower();
+
+                if(text == "y") {
+                    return true;
+                } else if(text == "n") {
+                    return false;
+                } else {
+                    Console.WriteLine("Invalid input. Please input 'y' or 'n'.");
+                }
+            }
         }
     }
 }
