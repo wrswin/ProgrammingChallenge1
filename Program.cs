@@ -47,19 +47,19 @@ namespace ProgrammingChallenge1 {
 
             Console.WriteLine("These are the dice rolls you made:");
 
-            var rollTotal = 0;
+            var rollsTotal = 0;
 
             for(var i = 0; i < rollCount; i += 1) {
                 var roll = rolls[i];
 
                 Console.WriteLine($"Roll {i + 1}: {roll}");
 
-                rollTotal += roll;
+                rollsTotal += roll;
             }
 
-            var averageRoll = rollTotal / rollCount;
+            var rollsAverage = (float)rollsTotal / rollCount;
 
-            Console.WriteLine($"The total of your rolls was {rollTotal} and your average roll was {averageRoll}");
+            Console.WriteLine($"The total of your rolls was {rollsTotal} and the average was {rollsAverage}");
         }
 
         static int MakeDiceRoll(int sides, int dieCount) {
